@@ -25,7 +25,7 @@ public class Remove_2_6 {
   }
 
   @Test
-  public void testRemove23() throws Exception {
+  public void testRemove26() throws Exception {
     driver.get(baseUrl + "/");
     
     assertEquals(driver.findElement(By.id("nav-signin-text")).getText(), "Sign in");
@@ -43,29 +43,18 @@ public class Remove_2_6 {
     assertNotEquals(driver.findElement(By.id("nav-signin-text")).getText(), "Sign in");
     
     
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.id("twotabsearchtextbox")).click();
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.id("twotabsearchtextbox")).clear();
     driver.findElement(By.id("twotabsearchtextbox")).sendKeys("banana slicer");
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.cssSelector("input.nav-submit-input")).click();
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.xpath("//li[@id='result_0']/div/div/div/div[2]/div/a/h2")).click();
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.id("add-to-cart-button")).click();
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.id("twotabsearchtextbox")).click();
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.id("twotabsearchtextbox")).clear();
     driver.findElement(By.id("twotabsearchtextbox")).sendKeys("nicolas cage pillow");
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.cssSelector("input.nav-submit-input")).click();
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.xpath("//li[@id='result_0']/div/div/div/div[2]/div/a/h2")).click();
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.id("add-to-cart-button")).click();
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.cssSelector("#nav-cart > span.nav-button-title.nav-button-line2")).click();
     
     
@@ -101,13 +90,6 @@ public class Remove_2_6 {
         }
         attempts++;
     }
-    
-    /*
-    driver.navigate().refresh();
-    driver.switchTo().alert().accept();
-    String newSubtotal = driver.findElement(By.cssSelector("p.a-spacing-none.a-spacing-top-mini > span.a-size-medium.a-text-bold")).getText();
-    */
-    
     
     int beginOrigIndex = origSubtotal.indexOf('$');
     int beginNewIndex = newSubtotal.indexOf('$');

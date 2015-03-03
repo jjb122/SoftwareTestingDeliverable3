@@ -27,7 +27,6 @@ public class Remove_2_1 {
   @Test
   public void testRemove21() throws Exception {
     driver.get(baseUrl + "/");
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.cssSelector("span.nav-cart-button.nav-sprite")).click();
     assertEquals("Your Shopping Cart is empty.", driver.findElement(By.cssSelector("h1")).getText());
     

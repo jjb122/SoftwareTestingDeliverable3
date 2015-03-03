@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 
@@ -11,7 +10,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class Remove_2_2 {
+public class ChangeQuant_3_1 {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -25,40 +24,50 @@ public class Remove_2_2 {
   }
 
   @Test
-  public void testRemove22() throws Exception {
-    driver.get(baseUrl + "/ref=nav_logo");
+  public void testRemove31() throws Exception {
+    driver.get(baseUrl + "/");
+    driver.findElement(By.id("twotabsearchtextbox")).click();
     driver.findElement(By.id("twotabsearchtextbox")).clear();
-    driver.findElement(By.id("twotabsearchtextbox")).sendKeys("banana slicer");
+    driver.findElement(By.id("twotabsearchtextbox")).sendKeys("nicolas cage pillow");
     driver.findElement(By.cssSelector("input.nav-submit-input")).click();
     driver.findElement(By.xpath("//li[@id='result_0']/div/div/div/div[2]/div/a/h2")).click();
     driver.findElement(By.id("add-to-cart-button")).click();
-    driver.findElement(By.id("nav-cart")).click();
+    driver.findElement(By.cssSelector("#nav-cart > span.nav-button-title.nav-button-line2")).click();
+    driver.findElement(By.id("a-autoid-2-announce")).click();
+    driver.findElement(By.id("dropdown1_1")).click();
     
     
+    String quantity = driver.findElement(By.className("a-dropdown-prompt")).getText();
     
-    List<WebElement> inputList = driver.findElements(By.xpath("//input"));
-    String toDelete = "";
-    
-    for (WebElement we: inputList){
-    	String name = we.getAttribute("name");
-    	//If we've found the item to delete....
-    	if (name.startsWith("submit.delete")){
-    		toDelete = name;
-    		break;
-    	}
+    String origCost = "";
+    int attempts = 0;
+    while(attempts < 5) {
+        try {
+        	 origCost = driver.findElement(By.xpath("//form[@id='activeCartViewForm']/div[2]/div/div[4]/div[2]/div[2]/p/span")).getText();
+            break;
+        } catch(Exception e) {
+        }
+        attempts++;
     }
     
-    driver.findElement(By.name(toDelete)).click();
-  
-    String wasRemoved = driver.findElement(By.cssSelector("div.sc-list-item-removed-msg.a-padding-medium > div > span.a-size-base")).getText();
-    wasRemoved = wasRemoved.substring(wasRemoved.length() - 31, wasRemoved.length());
+    String doubleCost = "";
+    attempts = 0;
+    while(attempts < 5) {
+        try {
+        	doubleCost = driver.findElement(By.className("sc-price")).getText();
+        	break;
+        } catch(Exception e) {
+        }
+        attempts++;
+    }
     
-    //Name of item may be too long to display, so we should not check the exact name. Just see if something was
-    //removed.
-    assertEquals("was removed from Shopping Cart.", wasRemoved);
     
-    //Checks if cart is empty and subtotal is 0.
-    assertEquals("Subtotal (0 item): $0.00", driver.findElement(By.cssSelector("span.a-size-medium.a-text-bold")).getText());
+    
+    doubleCost = doubleCost.substring(1, doubleCost.length());
+    origCost = origCost.substring(1, origCost.length());
+    
+    assertEquals(Double.parseDouble(doubleCost), Double.parseDouble(origCost)*2, 0);
+    assertEquals(2, Integer.parseInt(driver.findElement(By.className("a-dropdown-prompt")).getText()));
   }
 
   @After

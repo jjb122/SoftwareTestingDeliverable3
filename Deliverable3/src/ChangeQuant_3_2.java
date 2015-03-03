@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 
@@ -11,7 +10,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class Remove_2_5 {
+public class ChangeQuant_3_2 {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -25,56 +24,70 @@ public class Remove_2_5 {
   }
 
   @Test
-  public void testRemove25() throws Exception {
-    driver.get(baseUrl + "/ref=nav_logo");
-    
-    
-    assertEquals(driver.findElement(By.id("nav-signin-text")).getText(), "Sign in");
-    assertEquals(Integer.parseInt(driver.findElement(By.id("nav-cart-count")).getText()), 0);
-    
-    driver.findElement(By.id("nav-signin-title")).click();
-    driver.findElement(By.id("ap_email")).clear();
-    driver.findElement(By.id("ap_email")).sendKeys("roarblahblah@gmail.com");
-    driver.findElement(By.id("ap_password")).clear();
-    driver.findElement(By.id("ap_password")).sendKeys("testing123");
-    driver.findElement(By.id("signInSubmit-input")).click();
-    driver.findElement(By.cssSelector("span.nav-logo-base.nav-sprite")).click();
+  public void testChangeQuant32() throws Exception {
     driver.get(baseUrl + "/");
-    
-    assertNotEquals(driver.findElement(By.id("nav-signin-text")).getText(), "Sign in");
-    
+    driver.findElement(By.id("twotabsearchtextbox")).click();
     driver.findElement(By.id("twotabsearchtextbox")).clear();
     driver.findElement(By.id("twotabsearchtextbox")).sendKeys("banana slicer");
     driver.findElement(By.cssSelector("input.nav-submit-input")).click();
     driver.findElement(By.xpath("//li[@id='result_0']/div/div/div/div[2]/div/a/h2")).click();
     driver.findElement(By.id("add-to-cart-button")).click();
-    driver.findElement(By.id("nav-cart")).click();
+    driver.findElement(By.id("twotabsearchtextbox")).clear();
+    driver.findElement(By.id("twotabsearchtextbox")).sendKeys("nicolas cage pillow");
+    driver.findElement(By.cssSelector("input.nav-submit-input")).click();
+    driver.findElement(By.xpath("//li[@id='result_0']/div/div/div/div[2]/div/a/h2")).click();
+    driver.findElement(By.id("add-to-cart-button")).click();
+    driver.findElement(By.cssSelector("span.nav-cart-button.nav-sprite")).click();
     
     
-    
-    List<WebElement> inputList = driver.findElements(By.xpath("//input"));
-    String toDelete = "";
-    
-    for (WebElement we: inputList){
-    	String name = we.getAttribute("name");
-    	//If we've found the item to delete....
-    	if (name.startsWith("submit.delete")){
-    		toDelete = name;
-    		break;
-    	}
+    String oldSubtotal = "";
+    int attempts = 0;
+    while(attempts < 5) {
+        try {
+        	oldSubtotal = driver.findElement(By.className("sc-price")).getText();
+        	break;
+        } catch(Exception e) {
+        }
+        attempts++;
     }
     
-    driver.findElement(By.name(toDelete)).click();
-  
-    String wasRemoved = driver.findElement(By.cssSelector("div.sc-list-item-removed-msg.a-padding-medium > div > span.a-size-base")).getText();
-    wasRemoved = wasRemoved.substring(wasRemoved.length() - 31, wasRemoved.length());
     
-    //Name of item may be too long to display, so we should not check the exact name. Just see if something was
-    //removed.
-    assertEquals("was removed from Shopping Cart.", wasRemoved);
     
-    //Checks if cart is empty and subtotal is 0.
-    assertEquals("Subtotal (0 item): $0.00", driver.findElement(By.cssSelector("span.a-size-medium.a-text-bold")).getText());
+    driver.findElement(By.id("a-autoid-2-announce")).click();
+    driver.findElement(By.id("dropdown1_1")).click();
+    
+    
+    String quantity = driver.findElement(By.className("a-dropdown-prompt")).getText();
+    
+    String itemCost = "";
+    attempts = 0;
+    while(attempts < 5) {
+        try {
+        	 itemCost = driver.findElement(By.xpath("//form[@id='activeCartViewForm']/div[2]/div/div[4]/div[2]/div[2]/p/span")).getText();
+            break;
+        } catch(Exception e) {
+        }
+        attempts++;
+    }
+    
+    String newSubtotal = "";
+    attempts = 0;
+    while(attempts < 5) {
+        try {
+        	newSubtotal = driver.findElement(By.className("sc-price")).getText();
+        	break;
+        } catch(Exception e) {
+        }
+        attempts++;
+    }
+    
+    
+    oldSubtotal = oldSubtotal.substring(1, oldSubtotal.length());
+    newSubtotal = newSubtotal.substring(1, newSubtotal.length());
+    itemCost = itemCost.substring(1, itemCost.length());
+    
+    assertEquals(Double.parseDouble(newSubtotal) - Double.parseDouble(oldSubtotal), Double.parseDouble(itemCost), 0.01);
+    assertEquals(2, Integer.parseInt(quantity));
   }
 
   @After
