@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 
@@ -61,23 +62,65 @@ public class Add_1_3 {
     assertEquals(Integer.parseInt(driver.findElement(By.id("nav-cart-count")).getText()), 3);
   }
 
-  @After
-  public void tearDown() throws Exception {
-    driver.quit();
-    String verificationErrorString = verificationErrors.toString();
-    if (!"".equals(verificationErrorString)) {
-      fail(verificationErrorString);
-    }
-  }
+	@After
+	public void tearDown() throws Exception 
+	{
+		driver.get(baseUrl + "/");
+		driver.findElement(By.cssSelector("span.nav-logo-base.nav-sprite")).click();
+		driver.findElement(By.cssSelector("#nav-cart > span.nav-button-title.nav-button-line1")).click();
+		
+	    List<WebElement> inputList = driver.findElements(By.xpath("//input"));
+	    String toDelete = "";
+	    boolean hasDeletable = true;
+	    boolean deleted = false;
+	    
+	    while(hasDeletable)
+		{
+		    for (WebElement we: inputList)
+		    {
+		    	String name = we.getAttribute("name");
+		    	//If we've found the item to delete....
+		    	if (name.startsWith("submit.delete"))
+		    	{
+		    		toDelete = name;
+		    		driver.findElement(By.name(toDelete)).click();
+		    		driver.navigate().refresh();
+		    		//driver.switchTo().alert().accept();
+		    		deleted = true;
+		    		break;
+		    	}
+		    }
+		    if(deleted)
+		    {
+		    	inputList = driver.findElements(By.xpath("//input"));
+		    	deleted = false;
+		    }
+		    else
+		    {
+		    	hasDeletable = false; 
+		    }
+		}	  
+	    driver.quit();
+	    String verificationErrorString = verificationErrors.toString();
+	    if (!"".equals(verificationErrorString)) 
+	    {
+	    	fail(verificationErrorString);
+	    }
+	}
 
-  private boolean isElementPresent(By by) {
-    try {
-      driver.findElement(by);
-      return true;
-    } catch (NoSuchElementException e) {
-      return false;
-    }
-  }
+	private boolean isElementPresent(By by) 
+	{
+		try 
+		{
+			driver.findElement(by);
+			return true;
+		}
+		
+		catch (NoSuchElementException e) 
+		{
+			return false;
+		}
+	}
 
   private boolean isAlertPresent() {
     try {

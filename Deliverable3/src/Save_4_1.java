@@ -11,7 +11,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class Add_1_5 {
+public class Save_4_1 {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -25,41 +25,43 @@ public class Add_1_5 {
   }
 
   @Test
-  public void testScenario15() throws Exception {
-    driver.get(baseUrl + "/");
-
-    assertEquals(driver.findElement(By.id("nav-signin-text")).getText(), "Sign in");
-    assertEquals(Integer.parseInt(driver.findElement(By.id("nav-cart-count")).getText()), 0);    
+  public void testSave11() throws Exception 
+  {
+	    driver.get(baseUrl + "/");
+	    
+	    driver.findElement(By.id("twotabsearchtextbox")).click();
+	    driver.findElement(By.id("twotabsearchtextbox")).clear();
+	    driver.findElement(By.id("twotabsearchtextbox")).sendKeys("power of habit");
+	    driver.findElement(By.cssSelector("input.nav-submit-input")).click();
+	    driver.findElement(By.xpath("//li[@id='result_0']/div/div/div/div[2]/div/a/h2")).click();
+	    driver.findElement(By.id("add-to-cart-button")).click();
+	    driver.findElement(By.id("nav-cart")).click();
+	    
+	    assertEquals(Integer.parseInt(driver.findElement(By.id("nav-cart-count")).getText()), 1);
+	    
+	    List<WebElement> inputList = driver.findElements(By.xpath("//input"));
+	    String toSave = "";
     
-    driver.findElement(By.id("nav-signin-title")).click();
-    driver.findElement(By.id("ap_email")).clear();
-    driver.findElement(By.id("ap_email")).sendKeys("roarblahblah@gmail.com");
-    driver.findElement(By.id("ap_password")).clear();
-    driver.findElement(By.id("ap_password")).sendKeys("testing123");
-    driver.findElement(By.id("signInSubmit-input")).click();
-    driver.findElement(By.cssSelector("span.nav-logo-base.nav-sprite")).click();
-    driver.get(baseUrl + "/");
+	    for (WebElement we: inputList)
+	    {
+	    	String name = we.getAttribute("name");
+	    	//If we've found the item to delete....
+	    	if (name.startsWith("submit.save-for-later"))
+	    	{
+	    		toSave = name;
+	    		break;
+	    	}
+	    }
     
-    assertNotEquals(driver.findElement(By.id("nav-signin-text")).getText(), "Sign in");
+	    driver.findElement(By.name(toSave)).click();
+	    
+	    String saved = driver.findElement(By.xpath("//form[@id='activeCartViewForm']/div[2]/div/div[3]/div[2]/span")).getText();	    
+	    saved = saved.substring(saved.length() - 33, saved.length());
     
-    driver.findElement(By.id("twotabsearchtextbox")).click();
-    driver.findElement(By.id("twotabsearchtextbox")).clear();
-    driver.findElement(By.id("twotabsearchtextbox")).sendKeys("power of habit");
-    driver.findElement(By.cssSelector("input.nav-submit-input")).click();
-    driver.findElement(By.xpath("//li[@id='result_0']/div/div/div/div[2]/div/a/h2")).click();
-    driver.findElement(By.id("add-to-cart-button")).click();
-    driver.findElement(By.id("nav-cart")).click();
-    
-    assertEquals(Integer.parseInt(driver.findElement(By.id("nav-cart-count")).getText()), 1);
-    
-    driver.findElement(By.id("twotabsearchtextbox")).clear();
-    driver.findElement(By.id("twotabsearchtextbox")).sendKeys("protien powder");
-    driver.findElement(By.cssSelector("input.nav-submit-input")).click();
-    driver.findElement(By.xpath("//li[@id='result_0']/div/div/div/div[2]/div/a/h2")).click();
-    driver.findElement(By.id("add-to-cart-button")).click();
-    driver.findElement(By.cssSelector("#nav-cart > span.nav-button-title.nav-button-line2")).click();
-    
-    assertEquals(Integer.parseInt(driver.findElement(By.id("nav-cart-count")).getText()), 2);
+	    //Name of item may be too long to display, so we should not check the exact name. Just see if something was
+	    //removed.
+	    assertEquals("has been moved to Save for Later.", saved);
+	    assertEquals("Subtotal (0 item): $0.00", driver.findElement(By.cssSelector("span.a-size-medium.a-text-bold")).getText());	    
   }
 
   @After
@@ -99,9 +101,7 @@ public class Add_1_5 {
 		    {
 		    	hasDeletable = false; 
 		    }
-		}		  
-	    driver.get(baseUrl + "/");
-	    driver.get(baseUrl + "/gp/flex/sign-out.html/ref=nav_youraccount_signout?ie=UTF8&action=sign-out&path=%2Fgp%2Fyourstore%2Fhome&signIn=1&useRedirectOnSuccess=1");	  
+		}		  	  
     driver.quit();
     String verificationErrorString = verificationErrors.toString();
     if (!"".equals(verificationErrorString)) {
