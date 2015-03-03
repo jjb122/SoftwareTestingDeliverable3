@@ -11,7 +11,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class Remove_2_3 {
+public class Remove_2_5 {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -25,10 +25,25 @@ public class Remove_2_3 {
   }
 
   @Test
-  public void testRemove23() throws Exception {
+  public void testRemove22() throws Exception {
+    driver.get(baseUrl + "/ref=nav_logo");
+    
+    
+    assertEquals(driver.findElement(By.id("nav-signin-text")).getText(), "Sign in");
+    assertEquals(Integer.parseInt(driver.findElement(By.id("nav-cart-count")).getText()), 0);
+    
+    driver.findElement(By.id("nav-signin-title")).click();
+    driver.findElement(By.id("ap_email")).clear();
+    driver.findElement(By.id("ap_email")).sendKeys("roarblahblah@gmail.com");
+    driver.findElement(By.id("ap_password")).clear();
+    driver.findElement(By.id("ap_password")).sendKeys("testing123");
+    driver.findElement(By.id("signInSubmit-input")).click();
+    driver.findElement(By.cssSelector("span.nav-logo-base.nav-sprite")).click();
     driver.get(baseUrl + "/");
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
-    driver.findElement(By.id("twotabsearchtextbox")).click();
+    
+    assertNotEquals(driver.findElement(By.id("nav-signin-text")).getText(), "Sign in");
+    
+    
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.id("twotabsearchtextbox")).clear();
     driver.findElement(By.id("twotabsearchtextbox")).sendKeys("banana slicer");
@@ -39,25 +54,11 @@ public class Remove_2_3 {
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.id("add-to-cart-button")).click();
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
-    driver.findElement(By.id("twotabsearchtextbox")).click();
+    driver.findElement(By.id("nav-cart")).click();
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
-    driver.findElement(By.id("twotabsearchtextbox")).clear();
-    driver.findElement(By.id("twotabsearchtextbox")).sendKeys("nicolas cage pillow");
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
-    driver.findElement(By.cssSelector("input.nav-submit-input")).click();
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
-    driver.findElement(By.xpath("//li[@id='result_0']/div/div/div/div[2]/div/a/h2")).click();
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
-    driver.findElement(By.id("add-to-cart-button")).click();
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
-    driver.findElement(By.cssSelector("#nav-cart > span.nav-button-title.nav-button-line2")).click();
     
     
     
-    String cost = driver.findElement(By.className("sc-product-price")).getText();
-    cost = cost.substring(1, cost.length());
-    String origSubtotal = driver.findElement(By.cssSelector("p.a-spacing-none.a-spacing-top-mini > span.a-size-medium.a-text-bold")).getText();
-   
     List<WebElement> inputList = driver.findElements(By.xpath("//input"));
     String toDelete = "";
     
@@ -71,36 +72,16 @@ public class Remove_2_3 {
     }
     
     driver.findElement(By.name(toDelete)).click();
-
-    //This just keeps trying until we successfully can read the DOM element containing the subtotal. We have to
-    //do this, because it doesn't let me access it immediately. It seems to think it's still being edited.
-    String newSubtotal = "";
-    int attempts = 0;
-    while(attempts < 5) {
-        try {
-            newSubtotal = driver.findElement(By.cssSelector("p.a-spacing-none.a-spacing-top-mini > span.a-size-medium.a-text-bold")).getText();
-            break;
-        } catch(Exception e) {
-        }
-        attempts++;
-    }
+  
+    String wasRemoved = driver.findElement(By.cssSelector("div.sc-list-item-removed-msg.a-padding-medium > div > span.a-size-base")).getText();
+    wasRemoved = wasRemoved.substring(wasRemoved.length() - 31, wasRemoved.length());
     
-    /*
-    driver.navigate().refresh();
-    driver.switchTo().alert().accept();
-    String newSubtotal = driver.findElement(By.cssSelector("p.a-spacing-none.a-spacing-top-mini > span.a-size-medium.a-text-bold")).getText();
-    */
+    //Name of item may be too long to display, so we should not check the exact name. Just see if something was
+    //removed.
+    assertEquals("was removed from Shopping Cart.", wasRemoved);
     
-    int beginOrigIndex = origSubtotal.indexOf('$');
-    int beginNewIndex = newSubtotal.indexOf('$');
-    
-    
-    
-    double originalPrice = Double.parseDouble(origSubtotal.substring(beginOrigIndex+1, origSubtotal.length()));
-    double newPrice = Double.parseDouble(newSubtotal.substring(beginNewIndex+1, newSubtotal.length()));    
-    
-    assertEquals("Subtotal (1 item)", newSubtotal.substring(0, 17));
-    assertEquals(originalPrice - newPrice, Double.parseDouble(cost), 0.01);
+    //Checks if cart is empty and subtotal is 0.
+    assertEquals("Subtotal (0 item): $0.00", driver.findElement(By.cssSelector("span.a-size-medium.a-text-bold")).getText());
   }
 
   @After
