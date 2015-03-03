@@ -1,8 +1,12 @@
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
+
 import org.junit.*;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
@@ -22,9 +26,7 @@ public class Remove_2_2 {
 
   @Test
   public void testRemove22() throws Exception {
-    driver.get(baseUrl + "/");
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
-    driver.findElement(By.id("twotabsearchtextbox")).click();
+    driver.get(baseUrl + "/ref=nav_logo");
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.id("twotabsearchtextbox")).clear();
     driver.findElement(By.id("twotabsearchtextbox")).sendKeys("banana slicer");
@@ -37,11 +39,32 @@ public class Remove_2_2 {
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.id("nav-cart")).click();
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
-    driver.findElement(By.name("submit.delete.C2GTHXQTUK6UGS")).click();
-    // Warning: assertTextPresent may require manual changes
-    assertFalse(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*//form\\[@id='activeCartViewForm'\\]/div\\[3\\]/p/span/span/span[\\s\\S]*$"));
-    // Warning: assertTextNotPresent may require manual changes
-    assertFalse(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*css=span\\.a-size-medium\\.a-text-bold[\\s\\S]*$"));
+    
+    
+    
+    List<WebElement> inputList = driver.findElements(By.xpath("//input"));
+    String toDelete = "";
+    
+    for (WebElement we: inputList){
+    	String name = we.getAttribute("name");
+    	//If we've found the item to delete....
+    	if (name.startsWith("submit.delete")){
+    		toDelete = name;
+    		break;
+    	}
+    }
+    
+    driver.findElement(By.name(toDelete)).click();
+  
+    String wasRemoved = driver.findElement(By.cssSelector("div.sc-list-item-removed-msg.a-padding-medium > div > span.a-size-base")).getText();
+    wasRemoved = wasRemoved.substring(wasRemoved.length() - 31, wasRemoved.length());
+    
+    //Name of item may be too long to display, so we should not check the exact name. Just see if something was
+    //removed.
+    assertEquals("was removed from Shopping Cart.", wasRemoved);
+    
+    //Checks if cart is empty and subtotal is 0.
+    assertEquals("Subtotal (0 item): $0.00", driver.findElement(By.cssSelector("span.a-size-medium.a-text-bold")).getText());
   }
 
   @After

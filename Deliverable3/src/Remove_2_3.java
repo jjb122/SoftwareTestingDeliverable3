@@ -1,8 +1,12 @@
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
+
 import org.junit.*;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
@@ -47,10 +51,50 @@ public class Remove_2_3 {
     driver.findElement(By.id("add-to-cart-button")).click();
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.cssSelector("#nav-cart > span.nav-button-title.nav-button-line2")).click();
-    assertEquals("Getting num items, should be 2", driver.findElement(By.cssSelector("p.a-spacing-none.a-spacing-top-mini > span.a-size-medium.a-text-bold")).getText());
-    assertEquals("Getting cost of nic cage", driver.findElement(By.xpath("//form[@id='activeCartViewForm']/div[2]/div/div[4]/div[2]/div[2]/p/span")).getText());
+    System.out.println(driver.findElement(By.cssSelector("p.a-spacing-none.a-spacing-top-mini > span.a-size-medium.a-text-bold")).getText());
+    System.out.println("Cost of nic cage: " + driver.findElement(By.cssSelector("p.a-spacing-none.a-spacing-top-mini > span.a-size-medium.a-text-bold")).getText());
+    
+    List<WebElement> inputList = driver.findElements(By.xpath("//input"));
+    boolean isFound = false;
+    String firstItem = "LOLNOPE";
+    
+    for (WebElement we: inputList){
+    	String name = we.getAttribute("name");
+    	if (name.startsWith("submit.delete")){
+    		firstItem = name;
+    		break;
+    	}
+    }
+    
+ 
+   System.out.println(firstItem);
+  // String itemId = firstItem.getAttribute("data-itemid");
+  //  assertEquals("Getting num items, should be 2", driver.findElement(By.cssSelector("p.a-spacing-none.a-spacing-top-mini > span.a-size-medium.a-text-bold")).getText());
+    //assertEquals("Getting cost of nic cage", driver.findElement(By.xpath("//form[@id='activeCartViewForm']/div[2]/div/div[4]/div[2]/div[2]/p/span")).getText());
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
-    driver.findElement(By.name("submit.delete.C1XB7R3OZADZQQ")).click();
+    driver.findElement(By.name(firstItem)).click();
+ //   driver.findElement(By.name("submit.delete.C2GTHXQTUK6UGS")).click();
+   // driver.navigate().refresh();
+    //driver.switchTo().alert().accept();
+    
+   // driver.wait(3000);
+    String thing = "";
+    boolean result = false;
+    int attempts = 0;
+    while(attempts < 5) {
+        try {
+            thing = driver.findElement(By.cssSelector("p.a-spacing-none.a-spacing-top-mini > span.a-size-medium.a-text-bold")).getText();
+            result = true;
+            break;
+        } catch(Exception e) {
+        }
+        attempts++;
+    }
+    
+    
+    
+    System.out.println(thing);
+    
     assertEquals("Make sure says 1 item", driver.findElement(By.cssSelector("p.a-spacing-none.a-spacing-top-mini > span.a-size-medium.a-text-bold")).getText());
     assertEquals("Make sure decreased by amount", driver.findElement(By.xpath("//form[@id='activeCartViewForm']/div[3]/p/span/span/span")).getText());
   }

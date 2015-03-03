@@ -23,9 +23,9 @@ public class Remove_2_1 {
   @Test
   public void testRemove21() throws Exception {
     driver.get(baseUrl + "/");
-    driver.findElement(By.id("nav-cart-count")).click();
-    // Warning: assertTextNotPresent may require manual changes
-    assertFalse(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*//div\\[@id='content'\\]/div\\[4\\]/div/div\\[2\\][\\s\\S]*$"));
+    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
+    driver.findElement(By.cssSelector("span.nav-cart-button.nav-sprite")).click();
+    assertEquals("Your Shopping Cart is empty.", driver.findElement(By.cssSelector("h1")).getText());
   }
 
   @After
