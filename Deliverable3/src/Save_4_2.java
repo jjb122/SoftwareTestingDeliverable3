@@ -48,8 +48,6 @@ public class Save_4_2 {
 	    double price = Double.parseDouble(driver.findElement(By.xpath("//form[@id='activeCartViewForm']/div[2]/div/div[4]/div[2]/div[2]/p/span")).getText().substring(1));
 	    double totalCost = Double.parseDouble(driver.findElement(By.xpath("//form[@id='activeCartViewForm']/div[3]/p/span/span/span")).getText().substring(1));
 	    
-	    System.out.println("Intial Total Price: $" + totalCost);
-	    System.out.println("Item price: $" + price);
 	    List<WebElement> inputList = driver.findElements(By.xpath("//input"));
 	    String toSave = "";
   
@@ -67,7 +65,6 @@ public class Save_4_2 {
     driver.findElement(By.name(toSave)).click();
 
     String saved = driver.findElement(By.xpath("//form[@id='activeCartViewForm']/div[2]/div/div[3]/div[2]/span")).getText();
-    //System.out.println(saved);
     saved = saved.substring(saved.length() - 33, saved.length());
 
     //Name of item may be too long to display, so we should not check the exact name. Just see if something was
@@ -75,7 +72,6 @@ public class Save_4_2 {
     assertEquals("has been moved to Save for Later.", saved);
 
     double totalNewCost = Double.parseDouble(driver.findElement(By.xpath("//form[@id='gutterCartViewForm']/div[3]/div[2]/div/div/p/span/span[2]")).getText().substring(1));
-    //System.out.println("New Total Cost: $" + totalNewCost);
     
     //Checks if cart is empty and subtotal is 0.
     assertEquals(totalNewCost, (double)(totalCost-price), 0.01);      //assertEquals("Subtotal (0 item): $0.00", driver.findElement(By.cssSelector("span.a-size-medium.a-text-bold")).getText());
