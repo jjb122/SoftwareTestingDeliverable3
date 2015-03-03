@@ -15,6 +15,7 @@ And the user’s cart shall be empty
 And the user’s subtotal shall be $0.00
 
 #2.3
+Scenario: 2 unique items in the cart, removes 1 item while logged in 
 Given a cart with at least two unique items and customer is not logged into an Amazon account
 When the customer clicks “Delete” on an item in their cart
 Then the selected item shall be removed from the user’s cart
@@ -33,7 +34,6 @@ When the customer clicks “Delete” on an item in their cart
 Then the selected item shall be removed from the user’s cart 
 And the user’s cart shall be empty
 And the user’s subtotal shall be $0.00
-
 
 #2.6
 Scenario: 2 unique items in the cart, removes 1 item while logged in 

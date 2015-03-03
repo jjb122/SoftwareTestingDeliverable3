@@ -11,6 +11,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
+//Scenario: Add 3 items to cart
 public class Add_1_3 {
   private WebDriver driver;
   private String baseUrl;

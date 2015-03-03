@@ -11,6 +11,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
+//Scenario: Add 1 item to cart
 public class Add_1_1 {
   private WebDriver driver;
   private String baseUrl;
@@ -24,6 +25,7 @@ public class Add_1_1 {
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
 
+  
   @Test
   public void testScenario11() throws Exception {
     driver.get(baseUrl + "/");

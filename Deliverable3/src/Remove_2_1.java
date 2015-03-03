@@ -11,6 +11,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
+//Scenario: 0 items in the cart, check to see if the customer can delete an item
 public class Remove_2_1 {
   private WebDriver driver;
   private String baseUrl;

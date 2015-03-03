@@ -14,7 +14,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-
+//Scenario: 2 items in cart, save the first item in the cart for later
 public class Save_4_4 
 {
   private WebDriver driver;

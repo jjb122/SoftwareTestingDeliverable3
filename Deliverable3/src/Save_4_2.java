@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+//Scenario: 2 items in cart, save the first item in the cart for later
 public class Save_4_2 {
   private WebDriver driver;
   private String baseUrl;

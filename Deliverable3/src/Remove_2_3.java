@@ -11,6 +11,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
+//Scenario: 2 unique items in the cart, removes 1 item while logged in 
 public class Remove_2_3 {
   private WebDriver driver;
   private String baseUrl;

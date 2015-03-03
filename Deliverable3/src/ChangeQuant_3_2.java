@@ -11,6 +11,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
+//Scenario: 2 items in cart, change quantity of the first item from 1 to 2
 public class ChangeQuant_3_2 {
   private WebDriver driver;
   private String baseUrl;

@@ -11,6 +11,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
+//Scenario: 1 item in the cart, removes the first item in the cart
 public class Remove_2_2 {
   private WebDriver driver;
   private String baseUrl;

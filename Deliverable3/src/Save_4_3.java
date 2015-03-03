@@ -11,6 +11,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
+//Scenario: Save the first item in the cart for later while logged in
 public class Save_4_3 {
   private WebDriver driver;
   private String baseUrl;
