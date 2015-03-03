@@ -100,7 +100,7 @@ public class Add_1_5 {
 		    	hasDeletable = false; 
 		    }
 		}		  
-	    driver.get(baseUrl + "/");
+	    driver.get(baseUrl);
 	    driver.get(baseUrl + "/gp/flex/sign-out.html/ref=nav_youraccount_signout?ie=UTF8&action=sign-out&path=%2Fgp%2Fyourstore%2Fhome&signIn=1&useRedirectOnSuccess=1");	  
     driver.quit();
     String verificationErrorString = verificationErrors.toString();
