@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 
@@ -88,6 +89,44 @@ public class ChangeQuant_3_3 {
 
   @After
   public void tearDown() throws Exception {
+		driver.get(baseUrl + "/");
+		driver.findElement(By.cssSelector("span.nav-logo-base.nav-sprite")).click();
+		driver.findElement(By.cssSelector("#nav-cart > span.nav-button-title.nav-button-line1")).click();
+		
+	    List<WebElement> inputList = driver.findElements(By.xpath("//input"));
+	    String toDelete = "";
+	    boolean hasDeletable = true;
+	    boolean deleted = false;
+	    
+	    while(hasDeletable)
+		{
+		    for (WebElement we: inputList)
+		    {
+		    	String name = we.getAttribute("name");
+		    	//If we've found the item to delete....
+		    	if (name.startsWith("submit.delete"))
+		    	{
+		    		toDelete = name;
+		    		driver.findElement(By.name(toDelete)).click();
+		    		driver.navigate().refresh();
+		    		//driver.switchTo().alert().accept();
+		    		deleted = true;
+		    		break;
+		    	}
+		    }
+		    if(deleted)
+		    {
+		    	inputList = driver.findElements(By.xpath("//input"));
+		    	deleted = false;
+		    }
+		    else
+		    {
+		    	hasDeletable = false; 
+		    }
+		}		  
+	    driver.get(baseUrl + "/");
+	    driver.get(baseUrl + "/gp/flex/sign-out.html/ref=nav_youraccount_signout?ie=UTF8&action=sign-out&path=%2Fgp%2Fyourstore%2Fhome&signIn=1&useRedirectOnSuccess=1");
+	  
     driver.quit();
     String verificationErrorString = verificationErrors.toString();
     if (!"".equals(verificationErrorString)) {
