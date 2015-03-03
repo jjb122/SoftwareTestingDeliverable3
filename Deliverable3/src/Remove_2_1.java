@@ -1,8 +1,12 @@
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
+
 import org.junit.*;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
@@ -26,6 +30,21 @@ public class Remove_2_1 {
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=_e_07mn | ]]
     driver.findElement(By.cssSelector("span.nav-cart-button.nav-sprite")).click();
     assertEquals("Your Shopping Cart is empty.", driver.findElement(By.cssSelector("h1")).getText());
+    
+    //Finding "delete" option if it's there
+    List<WebElement> inputList = driver.findElements(By.xpath("//input"));
+    String toDelete = "";
+    
+    for (WebElement we: inputList){
+    	String name = we.getAttribute("name");
+    	//If we've found the item to delete....
+    	if (name.startsWith("submit.delete")){
+    		toDelete = name;
+    		break;
+    	}
+    }
+    
+    assertEquals(toDelete, "");
   }
 
   @After
